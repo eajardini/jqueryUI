@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Autocomplete - Multiple values</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+
+var availableTags = [
+     {cod:1, label: "ActionScript"},
+     {cod:2, label:  "AppleScript"},
+     {cod:"003", label:  "Asp"},
+     {cod:"004", label:  "BASIC"},
+     {cod:"005", label:  "C"},
+     {cod:"006", label:  "C++"},
+     {cod:"007", label:  "Clojure"},
+     {cod:"008", label:  "COBOL"},
+     {cod:"009", label:  "ColdFusion"},
+     {cod:"010", label:  "Erlang"},
+     {cod:"011", label:  "Fortran"},
+     {cod:"001", label:  "Groovy"},
+     {cod:"001", label:  "Haskell"},
+     {cod:"001", label:  "Java"},
+     {cod:"001", label:  "JavaScript"},
+     {cod:"001", label:  "Lisp"},
+     {cod:"001", label:  "Perl"},
+     {cod:"001", label:  "PHP"},
+     {cod:"001", label:  "Python"},
+     {cod:"001", label:  "Ruby"},
+     {cod:"001", label:  "Scala"},
+     {cod:"001", label:  "Scheme"}
+    ];
+
+
+function escolher() {
+        alert("Olá:" + availableTags[5].cod);    
+    }
+
+  $( function() {
+    
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+
+
+ 
+    $( "#tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+
+          $("#codigoescolhido").val(ui.item.cod);
+          return false;
+        }
+      });
+  } );
+  </script>
+</head>
+<body>
+ 
+<div class="ui-widget">
+  <label for="tags">Tag programming languages: </label>
+  <input id="tags" size="50">
+</div>
+
+<button onclick="escolher()">Escolher</button>
+
+<div class="ui-widget">
+    <p>Código escolhido:</p>
+    <input id="codigoescolhido">
+</div>
+ 
+ 
+</body>
+</html>

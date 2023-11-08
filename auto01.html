@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>jQuery UI Autocomplete functionality</title>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <!-- Javascript -->
+    <script>
+        $(function () {
+            $("#autocomp").autocomplete({
+                source: [
+                    { label: "Rua A", cod: "001" },
+                    { label: "Rua B", valuex: "DAD", cod: "002" },
+                    { label: "Rua C", valuex: "DAF", cod: "003" },
+                    { label: "Rua D", value: "DAH", cod: "004" },
+                    { label: "Rua E", value: "DER", cod: "005" }
+                ],
+                select: function (event, ui) {
+                    $("#codigoescolhido").val(ui.item.cod);
+                    return false;
+                }
+            });
+        });  
+    </script>
+</head>
+
+<body>
+    <!-- HTML -->
+    <div class="ui-widget">
+        <p>Rua:</p>
+        <input id="autocomp">
+    </div>
+    <div class="ui-widget">
+        <p>Código escolhido:</p>
+        <input id="codigoescolhido">
+    </div>
+
+    <div class="ui-widget">
+        <p>Result:</p>
+        <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+    </div>
+</body>
+
+</html>
